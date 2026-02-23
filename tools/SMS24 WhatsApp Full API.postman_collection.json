@@ -1,0 +1,1313 @@
+{
+	"info": {
+		"_postman_id": "2acbdfd7-507b-4009-973b-f53d09fffad7",
+		"name": "SMS24 WhatsApp Full API",
+		"description": "Comprehensive collection to test WhatsApp messaging (text, image, audio, video, document) and device management APIs in SMS24.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27018407"
+	},
+	"item": [
+		{
+			"name": "Incoming API - WhatsApp (Api-key header)",
+			"item": [
+				{
+					"name": "Send Text (POST /api/whatsapp/send)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Api-key",
+								"value": "{{api_key}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"contact\": [\n    {\n      \"number\": \"{{contact_number}}\",\n      \"message\": \"{{message_text}}\"\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "https://sms24.ma/api/whatsapp/send",
+							"protocol": "https",
+							"host": [
+								"sms24",
+								"ma"
+							],
+							"path": [
+								"api",
+								"whatsapp",
+								"send"
+							]
+						},
+						"description": "Sends a plain text WhatsApp message. Uses Api-key header."
+					},
+					"response": []
+				},
+				{
+					"name": "Send Image (POST)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Api-key",
+								"value": "{{api_key}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"contact\": [\n    {\n      \"number\": \"{{contact_number}}\",\n      \"message\": \"image\",\n      \"media\": \"image\",\n      \"url\": \"https://picsum.photos/200\"\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/whatsapp/send",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"whatsapp",
+								"send"
+							]
+						},
+						"description": "Sends an image with caption."
+					},
+					"response": []
+				},
+				{
+					"name": "Send Audio (POST)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Api-key",
+								"value": "{{api_key}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"contact\": [\n    {\n      \"number\": \"{{contact_number}}\",\n      \"message\": \"{{message_text}}\",\n      \"media\": \"audio\",\n      \"url\": \"{{media_url}}\"\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/whatsapp/send",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"whatsapp",
+								"send"
+							]
+						},
+						"description": "Sends an audio with caption."
+					},
+					"response": []
+				},
+				{
+					"name": "Send Video (POST)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Api-key",
+								"value": "{{api_key}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"contact\": [\n    {\n      \"number\": \"{{contact_number}}\",\n      \"message\": \"{{message_text}}\",\n      \"media\": \"video\",\n      \"url\": \"{{media_url}}\"\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/whatsapp/send",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"whatsapp",
+								"send"
+							]
+						},
+						"description": "Sends a video with caption."
+					},
+					"response": []
+				},
+				{
+					"name": "Send Document (POST)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Api-key",
+								"value": "{{api_key}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"contact\": [\n    {\n      \"number\": \"+212771393426\",\n      \"message\": \"client name Hello, this doc\",\n      \"media\": \"document\",\n      \"url\": \"https://test.martech.management/pdf_view/vtOnxbjwPAzw9IkT3DWLsm2S0Okext.pdf\",\n      \"name\": \"Client-Proposal.pdf\"\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/whatsapp/send",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"whatsapp",
+								"send"
+							]
+						},
+						"description": "Sends a document with caption."
+					},
+					"response": []
+				},
+				{
+					"name": "Send via Query (GET /api/whatsapp/send)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Api-key",
+								"value": "{{api_key}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/whatsapp/send?contacts={{contacts_csv}}&message={{message_text}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"whatsapp",
+								"send"
+							],
+							"query": [
+								{
+									"key": "contacts",
+									"value": "{{contacts_csv}}"
+								},
+								{
+									"key": "message",
+									"value": "{{message_text}}"
+								}
+							]
+						},
+						"description": "Sends WhatsApp message via query params. Uses 'contacts' CSV and 'message'."
+					},
+					"response": []
+				},
+				{
+					"name": "Get WhatsApp Log (GET /api/get/whatsapp/:uid)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/get/whatsapp/{{uid}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"get",
+								"whatsapp",
+								"{{uid}}"
+							]
+						},
+						"description": "Fetch a WhatsApp log by uid (returned in send responses)."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "OAuth - WhatsApp Device Management (Bearer {{access_token}})",
+			"item": [
+				{
+					"name": "Create Device (POST /api/whatsapp/devices)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"erp_device_auto\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/whatsapp/devices",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"whatsapp",
+								"devices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Devices (GET)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/whatsapp/devices",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"whatsapp",
+								"devices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Groups (GET)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/whatsapp/devices",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"whatsapp",
+								"devices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get QR (GET /api/whatsapp/devices/:device/qr)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/whatsapp/devices/{{device_id}}/qr",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"whatsapp",
+								"devices",
+								"{{device_id}}",
+								"qr"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Status (GET /api/whatsapp/devices/:device/status)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/whatsapp/devices/{{device_id}}/status",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"whatsapp",
+								"devices",
+								"{{device_id}}",
+								"status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Set Default (POST /api/whatsapp/devices/:device/set-default)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/whatsapp/devices/{{device_id}}/set-default",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"whatsapp",
+								"devices",
+								"{{device_id}}",
+								"set-default"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Disconnect (POST /api/whatsapp/devices/:device/disconnect)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/whatsapp/devices/{{device_id}}/disconnect",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"whatsapp",
+								"devices",
+								"{{device_id}}",
+								"disconnect"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Device (DELETE /api/whatsapp/devices/:device)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/whatsapp/devices/{{device_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"whatsapp",
+								"devices",
+								"{{device_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Devices Summary (GET /api/whatsapp/devices/summary)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/whatsapp/devices/summary",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"whatsapp",
+								"devices",
+								"summary"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get API Key (GET /api/whatsapp/api-key)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/whatsapp/api-key",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"whatsapp",
+								"api-key"
+							]
+						},
+						"description": "Returns the authenticated user's API key to use with Incoming API requests."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Incoming API - WhatsApp Groups (Api-key header)",
+			"item": [
+				{
+					"name": "List Groups (GET /api/whatsapp/groups)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Api-key",
+								"value": "{{api_key}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/whatsapp/groups",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"whatsapp",
+								"groups"
+							]
+						},
+						"description": "Returns groups for the default/connected device of the Api-key owner. Optional query: session_name to force a device name."
+					},
+					"response": []
+				},
+				{
+					"name": "Group Metadata (GET /api/whatsapp/groups/meta/:jid)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Api-key",
+								"value": "{{api_key}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/whatsapp/groups/meta/{{group_jid}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"whatsapp",
+								"groups",
+								"meta",
+								"{{group_jid}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Group Messages (GET /api/whatsapp/groups/:jid)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Api-key",
+								"value": "{{api_key}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/whatsapp/groups/{{group_jid}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"whatsapp",
+								"groups",
+								"{{group_jid}}"
+							]
+						},
+						"description": "Returns recent messages for a group."
+					},
+					"response": []
+				},
+				{
+					"name": "Send to Group (POST /api/whatsapp/groups/send)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Api-key",
+								"value": "{{api_key}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"receiver\": \"{{group_jid}}\",\n  \"message\": \"{{message_text}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/whatsapp/groups/send",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"whatsapp",
+								"groups",
+								"send"
+							]
+						},
+						"description": "Sends a text message to the specified group JID. Optional query: session_name to force a device name."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Incoming API - SMS (Api-key header)",
+			"item": [
+				{
+					"name": "Send SMS (POST /api/sms/send)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Api-key",
+								"value": "{{api_key}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"contact\": [\n    {\n      \"number\": \"{{contact_number}}\",\n      \"body\": \"{{message_text}}\",\n      \"sms_type\": \"plain\"\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/sms/send",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"sms",
+								"send"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send via Query (GET /api/sms/send)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Api-key",
+								"value": "{{api_key}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/sms/send?contacts={{contacts_csv}}&message={{message_text}}&sms_type=plain",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"sms",
+								"send"
+							],
+							"query": [
+								{
+									"key": "contacts",
+									"value": "{{contacts_csv}}"
+								},
+								{
+									"key": "message",
+									"value": "{{message_text}}"
+								},
+								{
+									"key": "sms_type",
+									"value": "plain"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get SMS Log (GET /api/get/sms/:uid)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/get/sms/{{uid}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"get",
+								"sms",
+								"{{uid}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Incoming API - Email (Api-key header)",
+			"item": [
+				{
+					"name": "Send Email (POST /api/email/send)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Api-key",
+								"value": "{{api_key}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"contact\": [\n    {\n      \"email\": \"test@example.com\",\n      \"subject\": \"{{email_subject}}\",\n      \"message\": \"{{message_text}}\"\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/email/send",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"email",
+								"send"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send via Query (GET /api/email/send)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Api-key",
+								"value": "{{api_key}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/email/send?contacts={{contacts_emails}}&subject={{email_subject}}&message={{message_text}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"email",
+								"send"
+							],
+							"query": [
+								{
+									"key": "contacts",
+									"value": "{{contacts_emails}}"
+								},
+								{
+									"key": "subject",
+									"value": "{{email_subject}}"
+								},
+								{
+									"key": "message",
+									"value": "{{message_text}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Email Log (GET /api/get/email/:uid)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/get/email/{{uid}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"get",
+								"email",
+								"{{uid}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "OAuth - Validation (Public)",
+			"item": [
+				{
+					"name": "Validate Credentials (POST /api/oauth/validate-credentials)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"client_id\": \"{{client_id}}\",\n  \"client_secret\": \"{{client_secret}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/oauth/validate-credentials",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"oauth",
+								"validate-credentials"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Client Info (GET /api/oauth/client-info)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/oauth/client-info?client_id={{client_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"oauth",
+								"client-info"
+							],
+							"query": [
+								{
+									"key": "client_id",
+									"value": "{{client_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Client Status (GET /api/oauth/client-status)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/oauth/client-status?client_id={{client_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"oauth",
+								"client-status"
+							],
+							"query": [
+								{
+									"key": "client_id",
+									"value": "{{client_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "OAuth - Webhooks (Public)",
+			"item": [
+				{
+					"name": "Register Global (POST /api/oauth/webhooks/register-global)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"erpIdentifier\": \"{{erp_identifier}}\",\n  \"url\": \"https://example.com/webhook\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/oauth/webhooks/register-global",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"oauth",
+								"webhooks",
+								"register-global"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test Global (POST /api/oauth/webhooks/test-global)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/oauth/webhooks/test-global",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"oauth",
+								"webhooks",
+								"test-global"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "OAuth - Webhooks (Authenticated)",
+			"item": [
+				{
+					"name": "List Global (GET /api/oauth/webhooks/list-global)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/oauth/webhooks/list-global",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"oauth",
+								"webhooks",
+								"list-global"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Global (PUT /api/oauth/webhooks/update-global/:id)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"url\": \"https://example.com/new-webhook\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/oauth/webhooks/update-global/{{erp_identifier}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"oauth",
+								"webhooks",
+								"update-global",
+								"{{erp_identifier}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Global (DELETE /api/oauth/webhooks/delete-global/:id)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/oauth/webhooks/delete-global/{{erp_identifier}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"oauth",
+								"webhooks",
+								"delete-global",
+								"{{erp_identifier}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Trigger Test (POST /api/oauth/webhooks/trigger-test)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/oauth/webhooks/trigger-test",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"oauth",
+								"webhooks",
+								"trigger-test"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "GET MESSAGE STATUS",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8081"
+		},
+		{
+			"key": "api_key",
+			"value": "47d53057-b957-441d-a0e9-c3d9a5606c48"
+		},
+		{
+			"key": "access_token",
+			"value": ""
+		},
+		{
+			"key": "device_id",
+			"value": ""
+		},
+		{
+			"key": "media_url",
+			"value": "https://example.com/file.pdf"
+		},
+		{
+			"key": "message_text",
+			"value": "Hello from Postman"
+		},
+		{
+			"key": "contact_number",
+			"value": "+1234567890"
+		},
+		{
+			"key": "contacts_csv",
+			"value": "+1234567890,+10987654321"
+		},
+		{
+			"key": "node_base_url",
+			"value": "http://localhost:3008"
+		},
+		{
+			"key": "session_id",
+			"value": "4443357_Selfaiz"
+		},
+		{
+			"key": "group_jid",
+			"value": "120363192082049378@g.us"
+		},
+		{
+			"key": "jid",
+			"value": "120363192082049378@g.us"
+		},
+		{
+			"key": "email_subject",
+			"value": "Hello Subject"
+		},
+		{
+			"key": "contacts_emails",
+			"value": "test1@example.com,test2@example.com"
+		},
+		{
+			"key": "client_id",
+			"value": ""
+		},
+		{
+			"key": "client_secret",
+			"value": ""
+		},
+		{
+			"key": "erp_identifier",
+			"value": "erp_global"
+		},
+		{
+			"key": "uid",
+			"value": ""
+		}
+	]
+}

@@ -1,0 +1,1 @@
+DELETE FROM auth.users WHERE email IN ('admin@martech.ma', 'client@dDELETE FROM public.clients; DELETE FROM auth.users WHERE email IN ('admin@martech.ma', 'client@domiciliation.ma');s; DELETE FROM auth.users WHERE email IN ('admin@martech.ma', 'client@domiciliation.ma');omiciliation.ma');
