@@ -299,8 +299,8 @@ export async function sendExpiredContractsWhatsAppAlerts() {
       clients: {
         full_name: string | null;
         phone: string | null;
-      } | null;
-    } | null;
+      }[] | null;
+    }[] | null;
   };
 
   type NotificationRow = {
@@ -347,12 +347,14 @@ export async function sendExpiredContractsWhatsAppAlerts() {
   const results = [];
 
   for (const contract of (contracts || []) as ExpiredContractRow[]) {
+    const company = contract.companies?.[0];
+    const client = company?.clients?.[0];
     const contractId = contract.id;
     const contractNumber = contract.contract_number || 'N/A';
     const endDate = contract.end_date;
-    const companyName = contract.companies?.name || 'Entreprise';
-    const clientName = contract.companies?.clients?.full_name || 'Client';
-    const clientPhone = contract.companies?.clients?.phone;
+    const companyName = company?.name || 'Entreprise';
+    const clientName = client?.full_name || 'Client';
+    const clientPhone = client?.phone;
     const targetPhone = clientPhone || fallbackNumber;
 
     if (!targetPhone) {
@@ -390,7 +392,8 @@ export async function sendExpiredContractsWhatsAppAlerts() {
       continue;
     }
 
-    const message = `Bonjour ${clientName}, votre contrat ${contractNumber} (${companyName}) a expire le ${endDate}. Merci de nous contacter pour le renouvellement.`;
+    const formattedEndDate = new Date(endDate).toLocaleDateString('fr-FR');
+    const message = `Bonjour ${clientName}, votre contrat ${contractNumber} (${companyName}) est expire depuis le ${formattedEndDate}. Merci de nous contacter pour le renouvellement.`;
 
     const whatsappResponse = await fetch('https://sms24.ma/api/whatsapp/send', {
       method: 'POST',
@@ -446,6 +449,187 @@ export async function sendExpiredContractsWhatsAppAlerts() {
       contractId,
       contractNumber,
       to: String(targetPhone),
+      status: sendStatus,
+    });
+  }
+
+  return results;
+}
+
+/**
+ * Send WhatsApp alert for contracts expiring soon.
+ * Default window is 7 days (can be changed with CONTRACT_EXPIRING_SOON_DAYS).
+ */
+export async function sendExpiringSoonWhatsAppAlerts() {
+  type ExpiringContractRow = {
+    id: string;
+    contract_number: string | null;
+    end_date: string;
+    status: string | null;
+    companies: {
+      name: string | null;
+      clients: {
+        full_name: string | null;
+        phone: string | null;
+      }[] | null;
+    }[] | null;
+  };
+
+  type NotificationRow = {
+    id: string;
+    metadata: {
+      type?: string;
+      days_before?: number;
+    } | null;
+  };
+
+  const supabase = createAdminClient();
+  const today = new Date();
+  const todayIso = today.toISOString().split('T')[0];
+  const soonDaysRaw = Number(process.env.CONTRACT_EXPIRING_SOON_DAYS || '7');
+  const soonDays = Number.isFinite(soonDaysRaw) ? Math.max(1, Math.floor(soonDaysRaw)) : 7;
+  const maxDate = new Date(today);
+  maxDate.setDate(maxDate.getDate() + soonDays);
+  const maxDateIso = maxDate.toISOString().split('T')[0];
+
+  const apiKey = process.env.SMS24_API_KEY || 'a49d140c-38f2-4bb2-8838-a91af00b9164';
+  const sessionName = process.env.SMS24_SESSION_NAME || '1226237_test';
+  const fallbackNumber = process.env.SMS24_DEFAULT_WHATSAPP_NUMBER || '212610153581';
+
+  if (!apiKey) {
+    throw new Error('SMS24 API key is missing');
+  }
+
+  const { data: contracts, error } = await supabase
+    .from('contracts')
+    .select(
+      `
+      id,
+      contract_number,
+      end_date,
+      status,
+      companies (
+        name,
+        clients (
+          full_name,
+          phone
+        )
+      )
+    `
+    )
+    .eq('status', 'active')
+    .gte('end_date', todayIso)
+    .lte('end_date', maxDateIso);
+
+  if (error) {
+    throw new Error(`Failed to fetch expiring contracts: ${error.message}`);
+  }
+
+  const results = [];
+
+  for (const contract of (contracts || []) as ExpiringContractRow[]) {
+    const company = contract.companies?.[0];
+    const client = company?.clients?.[0];
+    const contractId = contract.id;
+    const contractNumber = contract.contract_number || 'N/A';
+    const endDate = contract.end_date;
+    const companyName = company?.name || 'Entreprise';
+    const clientName = client?.full_name || 'Client';
+    const clientPhone = client?.phone;
+    const targetPhone = clientPhone || fallbackNumber;
+    const endDateObj = new Date(endDate);
+    const daysBefore = Math.ceil((endDateObj.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+
+    if (!targetPhone) {
+      results.push({
+        contractId,
+        contractNumber,
+        status: 'skipped',
+        reason: 'No destination phone number',
+      });
+      continue;
+    }
+
+    const { data: existingNotifications, error: existingError } = await supabase
+      .from('notifications')
+      .select('id, metadata')
+      .eq('contract_id', contractId)
+      .eq('channel', 'whatsapp');
+
+    if (existingError) {
+      console.error(`Failed to read notification history for contract ${contractId}:`, existingError);
+      continue;
+    }
+
+    const alreadySent = ((existingNotifications || []) as NotificationRow[]).some((notification) => {
+      return (
+        notification?.metadata?.type === 'contract_expiring_soon' &&
+        notification?.metadata?.days_before === daysBefore
+      );
+    });
+
+    if (alreadySent) {
+      results.push({
+        contractId,
+        contractNumber,
+        status: 'skipped',
+        reason: 'Already sent',
+      });
+      continue;
+    }
+
+    const formattedEndDate = endDateObj.toLocaleDateString('fr-FR');
+    const message = `Bonjour ${clientName}, votre contrat ${contractNumber} (${companyName}) expire le ${formattedEndDate} (dans ${daysBefore} jour(s)). Merci de nous contacter pour le renouvellement.`;
+
+    const whatsappResponse = await fetch('https://sms24.ma/api/whatsapp/send', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Api-key': apiKey,
+      },
+      body: JSON.stringify({
+        contact: [
+          {
+            number: String(targetPhone),
+            message,
+            session_name: sessionName,
+          },
+        ],
+      }),
+    });
+
+    let responsePayload: unknown = null;
+    try {
+      responsePayload = await whatsappResponse.json();
+    } catch {
+      responsePayload = null;
+    }
+
+    const sendStatus = whatsappResponse.ok ? 'sent' : 'failed';
+
+    await supabase
+      .from('notifications')
+      .insert({
+        contract_id: contractId,
+        channel: 'whatsapp',
+        status: sendStatus,
+        sent_at: whatsappResponse.ok ? new Date().toISOString() : null,
+        metadata: {
+          type: 'contract_expiring_soon',
+          contract_number: contractNumber,
+          end_date: endDate,
+          days_before: daysBefore,
+          to: String(targetPhone),
+          session_name: sessionName,
+          provider_response: responsePayload,
+        },
+      });
+
+    results.push({
+      contractId,
+      contractNumber,
+      to: String(targetPhone),
+      daysBefore,
       status: sendStatus,
     });
   }

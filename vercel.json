@@ -1,6 +1,10 @@
 {
   "crons": [
     {
+      "path": "/api/contracts/expiring-soon-whatsapp",
+      "schedule": "0 8 * * *"
+    },
+    {
       "path": "/api/contracts/expired-whatsapp",
       "schedule": "0 9 * * *"
     }
