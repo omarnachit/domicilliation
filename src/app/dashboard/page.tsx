@@ -1,8 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Activity, CreditCard, Mail, Users } from "lucide-react";
+import { Activity, CreditCard, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { JSX } from "react";
+import { UpgradePackSection } from "@/components/dashboard/UpgradePackSection";
+import { ClientAnalyticsSectionLazy } from "@/components/dashboard/ClientAnalyticsSectionLazy";
+import { PickupSchedulingSection } from "@/components/dashboard/PickupSchedulingSection";
 
 export default function DashboardPage(): JSX.Element {
     return (
@@ -54,7 +57,7 @@ export default function DashboardPage(): JSX.Element {
                                         Votre compte a été créé avec succès.
                                     </p>
                                 </div>
-                                <div className="ml-auto font-medium text-zinc-400 text-sm">Aujourd'hui</div>
+                                <div className="ml-auto font-medium text-zinc-400 text-sm">Aujourd&apos;hui</div>
                             </div>
                         </div>
                     </CardContent>
@@ -65,7 +68,7 @@ export default function DashboardPage(): JSX.Element {
                     </CardHeader>
                     <CardContent>
                         <p className="text-zinc-600 text-sm mb-4">
-                            Configurez les détails de votre entreprise dans l'onglet "Ma Société" pour générer votre contrat.
+                            Configurez les détails de votre entreprise dans l&apos;onglet &quot;Ma Société&quot; pour générer votre contrat.
                         </p>
                         <Button asChild variant="outline" className="w-full">
                             <Link href="/dashboard/company">Compléter mes informations</Link>
@@ -73,6 +76,31 @@ export default function DashboardPage(): JSX.Element {
                     </CardContent>
                 </Card>
             </div>
+
+            <UpgradePackSection />
+            <ClientAnalyticsSectionLazy />
+            <PickupSchedulingSection />
+
+            <Card className="bg-white border-zinc-200 shadow-sm">
+                <CardHeader>
+                    <CardTitle className="text-zinc-900">Actions Rapides</CardTitle>
+                </CardHeader>
+                <CardContent className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
+                    <Button asChild variant="outline" className="justify-start">
+                        <Link href="/dashboard/company">Completer ma societe</Link>
+                    </Button>
+                    <Button asChild variant="outline" className="justify-start">
+                        <Link href="/dashboard/contracts">Voir mes contrats</Link>
+                    </Button>
+                    <Button asChild variant="outline" className="justify-start">
+                        <Link href="/dashboard/billing">Consulter mes factures</Link>
+                    </Button>
+                    <Button asChild variant="outline" className="justify-start">
+                        <Link href="/dashboard/notifications">Ouvrir notifications</Link>
+                    </Button>
+                </CardContent>
+            </Card>
         </div>
     );
 }
+

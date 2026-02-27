@@ -83,6 +83,25 @@ export default function NotificationsPage(): JSX.Element {
           />
         </CardContent>
       </Card>
+      <div className="flex justify-end">
+        <button
+          onClick={async () => {
+            await fetch('/api/whatsapp/send', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                number: 212610153581,
+                message: 'Test WhatsApp depuis dashboard notifications',
+              }),
+            });
+
+            alert('Message envoye (verifie WhatsApp)');
+          }}
+          className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium"
+        >
+          Tester WhatsApp
+        </button>
+      </div>
     </div>
   );
 }

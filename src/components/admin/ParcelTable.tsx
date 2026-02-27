@@ -14,14 +14,21 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Trash2, Eye, Edit2, Upload } from 'lucide-react';
+import { Trash2, Eye, Edit2, CheckCircle2 } from 'lucide-react';
 
 interface ParcelTableProps {
   parcels: Parcel[];
   onAddParcel: (parcel: Parcel) => void;
+  onMarkAsWithdrawn: (id: string) => void;
+  onDeleteParcel: (id: string) => void;
 }
 
-export function ParcelTable({ parcels, onAddParcel }: ParcelTableProps) {
+export function ParcelTable({
+  parcels,
+  onAddParcel,
+  onMarkAsWithdrawn,
+  onDeleteParcel,
+}: ParcelTableProps) {
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
     carrier: '',
@@ -89,7 +96,6 @@ export function ParcelTable({ parcels, onAddParcel }: ParcelTableProps) {
 
     onAddParcel(newParcel);
 
-    // Reset form
     setFormData({
       carrier: '',
       trackingNumber: '',
@@ -124,7 +130,6 @@ export function ParcelTable({ parcels, onAddParcel }: ParcelTableProps) {
 
   return (
     <div className="space-y-4">
-      {/* Add Parcel Button */}
       <Button
         onClick={() => setShowForm(!showForm)}
         className="bg-indigo-600 hover:bg-indigo-700"
@@ -132,7 +137,6 @@ export function ParcelTable({ parcels, onAddParcel }: ParcelTableProps) {
         {showForm ? 'Annuler' : '+ Nouveau colis'}
       </Button>
 
-      {/* Form Section */}
       {showForm && (
         <Card className="bg-white border-zinc-200 shadow-sm">
           <CardHeader>
@@ -141,7 +145,6 @@ export function ParcelTable({ parcels, onAddParcel }: ParcelTableProps) {
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid gap-4 md:grid-cols-2">
-                {/* Client Name */}
                 <div>
                   <label className="block text-sm font-medium text-zinc-700 mb-1">
                     Nom du Client *
@@ -156,7 +159,6 @@ export function ParcelTable({ parcels, onAddParcel }: ParcelTableProps) {
                   />
                 </div>
 
-                {/* Carrier */}
                 <div>
                   <label className="block text-sm font-medium text-zinc-700 mb-1">
                     Transporteur *
@@ -168,7 +170,7 @@ export function ParcelTable({ parcels, onAddParcel }: ParcelTableProps) {
                     className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
                     required
                   >
-                    <option value="">Sélectionner un transporteur</option>
+                    <option value="">Selectionner un transporteur</option>
                     {carriers.map((carrier) => (
                       <option key={carrier} value={carrier}>
                         {carrier}
@@ -177,10 +179,9 @@ export function ParcelTable({ parcels, onAddParcel }: ParcelTableProps) {
                   </select>
                 </div>
 
-                {/* Tracking Number */}
                 <div>
                   <label className="block text-sm font-medium text-zinc-700 mb-1">
-                    Numéro de Suivi *
+                    Numero de Suivi *
                   </label>
                   <Input
                     type="text"
@@ -192,7 +193,6 @@ export function ParcelTable({ parcels, onAddParcel }: ParcelTableProps) {
                   />
                 </div>
 
-                {/* Weight */}
                 <div>
                   <label className="block text-sm font-medium text-zinc-700 mb-1">
                     Poids (kg) *
@@ -208,7 +208,6 @@ export function ParcelTable({ parcels, onAddParcel }: ParcelTableProps) {
                   />
                 </div>
 
-                {/* Dimensions */}
                 <div className="md:col-span-2 grid gap-4 md:grid-cols-3">
                   <div>
                     <label className="block text-sm font-medium text-zinc-700 mb-1">
@@ -251,7 +250,6 @@ export function ParcelTable({ parcels, onAddParcel }: ParcelTableProps) {
                   </div>
                 </div>
 
-                {/* Status */}
                 <div>
                   <label className="block text-sm font-medium text-zinc-700 mb-1">
                     Statut
@@ -270,7 +268,6 @@ export function ParcelTable({ parcels, onAddParcel }: ParcelTableProps) {
                   </select>
                 </div>
 
-                {/* Image Upload */}
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-zinc-700 mb-1">
                     Photo du Colis
@@ -293,7 +290,6 @@ export function ParcelTable({ parcels, onAddParcel }: ParcelTableProps) {
                 </div>
               </div>
 
-              {/* Submit Button */}
               <div className="flex gap-2 pt-4">
                 <Button
                   type="submit"
@@ -314,7 +310,6 @@ export function ParcelTable({ parcels, onAddParcel }: ParcelTableProps) {
         </Card>
       )}
 
-      {/* Parcels List */}
       <div className="rounded-lg border border-zinc-200 bg-white overflow-hidden">
         {parcels.length > 0 ? (
           <Table>
@@ -326,7 +321,7 @@ export function ParcelTable({ parcels, onAddParcel }: ParcelTableProps) {
                 <TableHead className="h-10 text-zinc-700">Poids</TableHead>
                 <TableHead className="h-10 text-zinc-700">Dimensions</TableHead>
                 <TableHead className="h-10 text-zinc-700">Statut</TableHead>
-                <TableHead className="h-10 text-zinc-700">Reçu le</TableHead>
+                <TableHead className="h-10 text-zinc-700">Recu le</TableHead>
                 <TableHead className="h-10 text-zinc-700">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -349,7 +344,7 @@ export function ParcelTable({ parcels, onAddParcel }: ParcelTableProps) {
                     {parcel.weight} kg
                   </TableCell>
                   <TableCell className="text-sm text-zinc-600">
-                    {parcel.length} × {parcel.width} × {parcel.height} cm
+                    {parcel.length} x {parcel.width} x {parcel.height} cm
                   </TableCell>
                   <TableCell>
                     <Badge
@@ -363,7 +358,19 @@ export function ParcelTable({ parcels, onAddParcel }: ParcelTableProps) {
                     {formatDate(parcel.createdAt)}
                   </TableCell>
                   <TableCell>
-                    <div className="flex gap-2">
+                    <div className="flex flex-wrap gap-2">
+                      {parcel.status !== 'withdrawn' && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="h-8"
+                          onClick={() => onMarkAsWithdrawn(parcel.id)}
+                          title="Marquer comme retire"
+                        >
+                          <CheckCircle2 className="h-4 w-4" />
+                          Recupere
+                        </Button>
+                      )}
                       {parcel.imageUrl && (
                         <Button
                           variant="ghost"
@@ -387,6 +394,7 @@ export function ParcelTable({ parcels, onAddParcel }: ParcelTableProps) {
                         size="sm"
                         className="h-8 w-8 p-0 text-red-600 hover:text-red-700"
                         title="Supprimer"
+                        onClick={() => onDeleteParcel(parcel.id)}
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
@@ -398,7 +406,7 @@ export function ParcelTable({ parcels, onAddParcel }: ParcelTableProps) {
           </Table>
         ) : (
           <div className="p-8 text-center text-zinc-500">
-            Aucun colis enregistré. Cliquez sur "Nouveau colis" pour en ajouter un.
+            Aucun colis enregistre. Cliquez sur "Nouveau colis" pour en ajouter un.
           </div>
         )}
       </div>

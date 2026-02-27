@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Users, FileText, Package, Bell, Settings, LogOut } from "lucide-react";
+import { LayoutDashboard, Users, FileText, Package, Bell, Settings, LogOut, DollarSign, Activity, BarChart3, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { signOut } from "@/app/login/actions";
 import { JSX } from "react";
@@ -10,9 +10,13 @@ import { JSX } from "react";
 const navigation = [
     { name: "Vue Globale", href: "/admin/dashboard", icon: LayoutDashboard },
     { name: "Clients", href: "/admin/clients", icon: Users },
-    { name: "Personnel", href: "/admin/staff", icon: Users },
+    { name: "Utilisateurs", href: "/admin/users", icon: Users },
     { name: "Contrats", href: "/admin/contracts", icon: FileText },
+    { name: "Paiements", href: "/admin/payments", icon: DollarSign },
     { name: "Colis", href: "/admin/parcels", icon: Package },
+    { name: "Rapports", href: "/admin/reports", icon: BarChart3 },
+    { name: "Audit", href: "/admin/audit", icon: Activity },
+    { name: "Sécurité", href: "/admin/security", icon: Lock },
     { name: "Notifications", href: "/admin/notifications", icon: Bell },
     { name: "Paramètres", href: "/admin/settings", icon: Settings },
 ];

@@ -1,0 +1,43 @@
+import { Parcel } from '@/lib/parcel-data';
+
+export const initialParcelsMock: Parcel[] = [
+  {
+    id: 'p-1',
+    carrier: 'DHL',
+    trackingNumber: 'DHL-78451236',
+    weight: 1.4,
+    length: 32,
+    width: 24,
+    height: 12,
+    status: 'received',
+    clientName: 'Atlas SARL',
+    createdAt: new Date('2026-02-22T10:30:00'),
+    updatedAt: new Date('2026-02-22T10:30:00'),
+  },
+  {
+    id: 'p-2',
+    carrier: 'Aramex',
+    trackingNumber: 'ARMX-19274566',
+    weight: 0.8,
+    length: 20,
+    width: 18,
+    height: 8,
+    status: 'pending',
+    clientName: 'Nexus Digital',
+    createdAt: new Date('2026-02-23T09:15:00'),
+    updatedAt: new Date('2026-02-23T09:15:00'),
+  },
+  {
+    id: 'p-3',
+    carrier: 'FedEx',
+    trackingNumber: 'FDX-55443322',
+    weight: 2.1,
+    length: 40,
+    width: 30,
+    height: 15,
+    status: 'reshipped',
+    clientName: 'Mena Trade',
+    createdAt: new Date('2026-02-21T15:45:00'),
+    updatedAt: new Date('2026-02-21T15:45:00'),
+  },
+];

@@ -11,6 +11,7 @@ import { JSX, useState } from "react";
 import { Loader2, CheckCircle2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import { buildContractReference, CONTRACT_STORAGE_KEY, type ContractDraft } from "@/lib/contract-draft";
 
 const companySchema = z.object({
     name: z.string().min(2, "Le nom de la société est requis"),
@@ -93,6 +94,22 @@ export default function CompanyPage(): JSX.Element {
         if (companyError) {
             console.error(companyError);
         } else {
+            const now = new Date();
+            const draft: ContractDraft = {
+                companyName: values.name,
+                legalForm: values.legal_form,
+                iceNumber: values.ice_number || "En cours",
+                rcNumber: values.rc_number || "En cours",
+                taxId: values.tax_id || "En cours",
+                address: values.address,
+                createdAt: now.toISOString(),
+                reference: buildContractReference(now),
+                monthlyAmountMad: 599,
+                durationMonths: 12,
+                packName: "Domiciliation Business",
+            };
+
+            localStorage.setItem(CONTRACT_STORAGE_KEY, JSON.stringify(draft));
             router.refresh();
             router.push('/dashboard/contracts'); // Next step
         }

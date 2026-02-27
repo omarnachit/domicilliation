@@ -14,7 +14,7 @@ interface PaymentInput {
 /**
  * Calculate VAT (Taxe sur la Valeur Ajoutée) at 20% (Morocco standard rate)
  */
-export function calculateVAT(amountHT: number, vatRate: number = 20): {
+function calculateVAT(amountHT: number, vatRate: number = 20): {
   amountHT: number;
   vatAmount: number;
   totalAmount: number;

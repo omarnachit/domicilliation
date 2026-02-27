@@ -1,113 +1,46 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ClientsTable } from "@/components/admin/ClientsTable";
-import { Users, TrendingUp, AlertCircle, Calendar } from "lucide-react";
+import { Users, TrendingUp, AlertCircle } from "lucide-react";
 import { JSX } from "react";
 import { Client, formatCurrency } from "@/lib/clients-data";
 
 export default function ClientsPage(): JSX.Element {
-  const [clientsList, setClientsList] = useState<Client[]>([
-    {
-      id: '1',
-      name: 'Tech Solutions SARL',
-      email: 'contact@techsolutions.ma',
-      company: 'Tech Solutions SARL',
-      phone: '+212612345678',
-      subscriptionPack: 'domiciliation-complete',
-      status: 'active',
-      expirationDate: new Date(Date.now() + 120 * 24 * 60 * 60 * 1000),
-      monthlyRevenue: 5000,
-      joinDate: new Date('2023-06-15'),
-      lastActivityDate: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: '2',
-      name: 'Commerce Express LLC',
-      email: 'info@commerce-express.com',
-      company: 'Commerce Express LLC',
-      phone: '+212712345678',
-      subscriptionPack: 'adresse-premium',
-      status: 'active',
-      expirationDate: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000),
-      monthlyRevenue: 2500,
-      joinDate: new Date('2023-11-20'),
-      lastActivityDate: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: '3',
-      name: 'Cabinet Juridique Al-Khalil',
-      email: 'cabinet@alkhalil.ma',
-      company: 'Cabinet Juridique Al-Khalil',
-      phone: '+212812345678',
-      subscriptionPack: 'adresse-basique',
-      status: 'trial',
-      expirationDate: new Date(Date.now() + 8 * 24 * 60 * 60 * 1000),
-      monthlyRevenue: 800,
-      joinDate: new Date('2026-02-01'),
-      lastActivityDate: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: '4',
-      name: 'Import/Export Maghreb',
-      email: 'contact@importexport.net',
-      company: 'Import/Export Maghreb',
-      phone: '+212612987654',
-      subscriptionPack: 'domiciliation-complete',
-      status: 'suspended',
-      expirationDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
-      monthlyRevenue: 3500,
-      joinDate: new Date('2023-03-10'),
-      lastActivityDate: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000),
-      updatedAt: new Date(),
-    },
-    {
-      id: '5',
-      name: 'Consulting Plus',
-      email: 'hello@consultingplus.ma',
-      company: 'Consulting Plus',
-      phone: '+212712987654',
-      subscriptionPack: 'adresse-basique',
-      status: 'active',
-      expirationDate: new Date(Date.now() + 200 * 24 * 60 * 60 * 1000),
-      monthlyRevenue: 1500,
-      joinDate: new Date('2024-05-05'),
-      lastActivityDate: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: '6',
-      name: 'Design Studio Maroc',
-      email: 'studio@designmaroc.ma',
-      company: 'Design Studio Maroc',
-      phone: '+212812987654',
-      subscriptionPack: 'essentiel',
-      status: 'cancelled',
-      expirationDate: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000),
-      monthlyRevenue: 400,
-      joinDate: new Date('2023-01-20'),
-      lastActivityDate: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000),
-      updatedAt: new Date(),
-    },
-    {
-      id: '7',
-      name: 'Logistique Casablanca',
-      email: 'logistics@casablanca.ma',
-      company: 'Logistique Casablanca',
-      phone: '+212612654321',
-      subscriptionPack: 'adresse-premium',
-      status: 'active',
-      expirationDate: new Date(Date.now() + 150 * 24 * 60 * 60 * 1000),
-      monthlyRevenue: 3200,
-      joinDate: new Date('2023-09-12'),
-      lastActivityDate: new Date(),
-      updatedAt: new Date(),
-    },
-  ]);
+  type ApiClient = Omit<Client, 'expirationDate' | 'joinDate' | 'lastActivityDate' | 'updatedAt'> & {
+    expirationDate: string | Date;
+    joinDate: string | Date;
+    lastActivityDate: string | Date;
+    updatedAt: string | Date;
+  };
+
+  const [clientsList, setClientsList] = useState<Client[]>([]);
+
+  useEffect(() => {
+    const loadClients = async () => {
+      try {
+        const response = await fetch('/api/admin/clients');
+        const payload = await response.json();
+
+        if (!response.ok || !payload?.success) return;
+
+        const mapped = (payload.clients || []).map((client: ApiClient) => ({
+          ...client,
+          expirationDate: new Date(client.expirationDate),
+          joinDate: new Date(client.joinDate),
+          lastActivityDate: new Date(client.lastActivityDate),
+          updatedAt: new Date(client.updatedAt),
+        }));
+
+        setClientsList(mapped);
+      } catch {
+        // Keep empty list if the API fails.
+      }
+    };
+
+    loadClients();
+  }, []);
 
   const handleViewClient = (client: Client) => {
     console.log('View client:', client);
@@ -176,7 +109,9 @@ export default function ClientsPage(): JSX.Element {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-green-600">{activeClients}</div>
-            <p className="text-xs text-zinc-500 mt-1">{((activeClients / totalClients) * 100).toFixed(1)}% du total</p>
+            <p className="text-xs text-zinc-500 mt-1">
+              {totalClients > 0 ? ((activeClients / totalClients) * 100).toFixed(1) : '0.0'}% du total
+            </p>
           </CardContent>
         </Card>
 

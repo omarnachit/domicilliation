@@ -17,10 +17,13 @@ export function Navbar(): JSX.Element {
 
                 <div className="hidden md:flex items-center gap-8">
                     <Link href="/services-complementaires" className="text-sm font-medium text-zinc-600 hover:text-indigo-600 transition-colors">
-                        Services Complémentaires
+                        Services Complementaires
                     </Link>
                     <Link href="/packs" className="text-sm font-medium text-zinc-600 hover:text-indigo-600 transition-colors">
                         Nos Packs
+                    </Link>
+                    <Link href="/contact" className="text-sm font-medium text-zinc-600 hover:text-indigo-600 transition-colors">
+                        Contact
                     </Link>
                     <Link href="#pricing" className="text-sm font-medium text-zinc-600 hover:text-indigo-600 transition-colors">
                         Tarifs
@@ -35,7 +38,7 @@ export function Navbar(): JSX.Element {
                         Connexion
                     </Link>
                     <Button asChild className="bg-indigo-600 text-white hover:bg-indigo-700 font-medium shadow-sm">
-                        <Link href="/packs">Découvrir les packs</Link>
+                        <Link href="/packs">Decouvrir les packs</Link>
                     </Button>
                 </div>
             </div>
